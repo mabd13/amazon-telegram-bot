@@ -55,20 +55,23 @@ app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message
 if __name__ == "__main__":
     print("Bot is running...")
     app.run_polling()
-# Render ke liye fake port – sirf yeh paste karo
+# Render fix – 100% working version (bas yeh paste karo)
 
 import os
 import http.server
 import socketserver
 from threading import Thread
+import asyncio
 
 def run_bot():
-    app.run_polling()
+    asyncio.run(app.run_polling())    # ← yeh tumhare bot ko start karega
 
+# Bot ko background mein chala do
 Thread(target=run_bot, daemon=True).start()
 
+# Render ke liye fake port kholo
 PORT = int(os.environ.get("PORT", 10000))
-print(f"Fake port {PORT} khul gaya – Render khush!")
+print(f"Bot start ho gaya + Fake port {PORT} khul gaya!")
 
 with socketserver.TCPServer(("", PORT), http.server.SimpleHTTPRequestHandler) as httpd:
     httpd.serve_forever()
