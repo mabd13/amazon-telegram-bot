@@ -55,3 +55,20 @@ app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message
 if __name__ == "__main__":
     print("Bot is running...")
     app.run_polling()
+# Render ke liye fake port – sirf yeh paste karo
+
+import os
+import http.server
+import socketserver
+from threading import Thread
+
+def run_bot():
+    app.run_polling()
+
+Thread(target=run_bot, daemon=True).start()
+
+PORT = int(os.environ.get("PORT", 10000))
+print(f"Fake port {PORT} khul gaya – Render khush!")
+
+with socketserver.TCPServer(("", PORT), http.server.SimpleHTTPRequestHandler) as httpd:
+    httpd.serve_forever()
